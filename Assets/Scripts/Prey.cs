@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Prey : MonoBehaviour
 {
+    public Vector3 position;
+    public GameObject prey;
+
+    private void Awake()
+    {
+        prey = new GameObject("prey");
+    }
     // Start is called before the first frame update
     void Start()
     {
-        GameObject prey = new GameObject();
+        
         createMesh(prey);
-        prey.transform.position = new Vector3(1, 1, 3);
+        prey.transform.position = new Vector3(1, 1, 7);
+        position = prey.transform.position;
         prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
     }
