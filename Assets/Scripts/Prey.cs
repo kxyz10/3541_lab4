@@ -7,8 +7,24 @@ public class Prey : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MeshFilter filter = GetComponent<MeshFilter>();
+        GameObject prey = new GameObject();
+        createMesh(prey);
+        prey.transform.position = new Vector3(1, 1, 3);
+        prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void createMesh(GameObject obj)
+    {
+        MeshFilter filter = obj.AddComponent<MeshFilter>();
         Mesh mesh = filter.mesh;
+        mesh.Clear();
 
         //verticies
         Vector3[] vertices = new Vector3[]
@@ -120,17 +136,16 @@ public class Prey : MonoBehaviour
             new Vector2(1,0)
         };
 
-        mesh.Clear();
+
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
-        mesh.Optimize();
+
         mesh.RecalculateNormals();
-    }
+        mesh.Optimize();
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        //create mesh renderer and material
+        MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
+        Material material = renderer.material;
     }
 }

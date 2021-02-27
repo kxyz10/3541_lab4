@@ -11,6 +11,7 @@ public class Plane : MonoBehaviour
         plane = new GameObject("Plane");
         createPlaneMesh(plane);
         setPlaneColor(plane, Color.black);
+        plane.transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
