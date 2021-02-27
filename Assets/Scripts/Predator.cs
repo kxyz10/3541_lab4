@@ -6,6 +6,7 @@ public class Predator : MonoBehaviour
 {
     public Vector3 position;
     public Vector3 direction;
+    public Vector3 facing;
     public bool chasing;
     public GameObject predator;
     public GameObject prey;
@@ -15,12 +16,16 @@ public class Predator : MonoBehaviour
     Vector3 down = new Vector3(0, 0, -0.1f);
     Vector3 left = new Vector3(-0.1f, 0, 0);
     Vector3 right = new Vector3(0.1f, 0, 0);
-    
+
+    private void Awake()
+    {
+        predator = new GameObject("predator");
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        predator = new GameObject("predator");
+
         createMesh(predator);
         predator.transform.position = new Vector3(1, 1, 1);
         position = predator.transform.position;
@@ -43,6 +48,7 @@ public class Predator : MonoBehaviour
         //right now, it just waits to move until its position is back in bounds
         if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
         {
+            predator.transform.LookAt(position);
             predator.transform.position = position;
         }
         else
@@ -52,7 +58,7 @@ public class Predator : MonoBehaviour
         }
 
         
-        if (Vector3.Distance(position, prey.transform.position) < 4)
+        if (Vector3.Distance(position, prey.transform.position) < 10)
         {
             chasing = true;
             Debug.Log("chasing");
@@ -72,6 +78,22 @@ public class Predator : MonoBehaviour
             
             if (timePassed < timeInterval)
             {
+                if(direction == up && position.z > 9.8)
+                {
+                    direction = down;
+                }
+                else if (direction == down && position.z < -9.8)
+                {
+                    direction = up;
+                }
+                else if (direction == left && position.x > 9.8)
+                {
+                    direction = right;
+                }
+                else if (direction == right && position.x < -9.8)
+                {
+                    direction = left;
+                }
                 position += direction;
             }
             else
@@ -104,32 +126,25 @@ public class Predator : MonoBehaviour
             direction = right;
         }
         return direction;
-        //timePassed = 0;
-        //while(timePassed < timeInterval && !chasing)
-        //{
-        //    position += direction;
-        //    timePassed += Time.deltaTime;
-        //}
-        //timePassed = 0;
     }
 
     void chasePrey()
     {
         float distance = Vector3.Distance(position, prey.transform.position);
         Vector3 preyPos = prey.transform.position;
-        if(Vector3.Distance((position + up),preyPos) < distance)
+        if(Vector3.Distance((position + up),preyPos) < distance && position.z < 9.8f)
         {
             position += up;
         }
-        if (Vector3.Distance((position + down), preyPos) < distance)
+        if (Vector3.Distance((position + down), preyPos) < distance && position.z > -9.8f)
         {
             position += down;
         }
-        if (Vector3.Distance((position + left), preyPos) < distance)
+        if (Vector3.Distance((position + left), preyPos) < distance && position.x > -9.8f)
         {
             position += left;
         }
-        if (Vector3.Distance((position + right), preyPos) < distance)
+        if (Vector3.Distance((position + right), preyPos) < distance && position.x < 9.8f)
         {
             position += right;
         }

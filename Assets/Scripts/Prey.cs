@@ -5,7 +5,13 @@ using UnityEngine;
 public class Prey : MonoBehaviour
 {
     public Vector3 position;
+    public GameObject predator;
     public GameObject prey;
+    Vector3 up = new Vector3(0, 0, 0.2f);
+    Vector3 down = new Vector3(0, 0, -0.2f);
+    Vector3 left = new Vector3(-0.2f, 0, 0);
+    Vector3 right = new Vector3(0.2f, 0, 0);
+
 
     private void Awake()
     {
@@ -13,19 +19,75 @@ public class Prey : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {  
         createMesh(prey);
         prey.transform.position = new Vector3(1, 1, 7);
         position = prey.transform.position;
         prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
+        predator = GameObject.Find("predator");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
+        {
+            prey.transform.LookAt(position);
+            prey.transform.position = position;
+        }
+        else
+        {
+            //changeDirection();
+        }
+        avoidPredator();
+    }
 
+    void changeDirection()
+    {
+        if(position.x > 10)
+        {
+            position.x = 9.9f;
+            position += up;
+        }
+        if(position.x < -10)
+        {
+            position.x = -9.9f;
+            position += left;
+        }
+        if(position.z > 10)
+        {
+            position.z = 9.9f;
+            position += left;
+        }
+        if(position.z < -10)
+        {
+            position.z = -9.9f;
+            position += up;
+        }
+    }
+
+
+    void avoidPredator()
+    {
+        float distance = Vector3.Distance(position, predator.transform.position);
+        Vector3 predatorPos = predator.transform.position;
+        if (Vector3.Distance((position + up), predatorPos) > distance && position.z < 9.5f)
+        {
+            position += up;
+        }
+        if (Vector3.Distance((position + down), predatorPos) > distance && position.z > -9.5f)
+        {
+            position += down;
+        }
+        if (Vector3.Distance((position + left), predatorPos) > distance && position.x > -9.5f)
+        {
+            position += left;
+        }
+        if (Vector3.Distance((position + right), predatorPos) > distance && position.x < 9.5f)
+        {
+        position += right;
+        }
     }
 
     void createMesh(GameObject obj)
