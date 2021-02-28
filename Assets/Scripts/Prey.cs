@@ -21,7 +21,7 @@ public class Prey : MonoBehaviour
     void Start()
     {  
         createMesh(prey);
-        prey.transform.position = new Vector3(1, 1, -3);
+        prey.transform.position = new Vector3(5, 1, 1);
         position = prey.transform.position;
         prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
@@ -31,16 +31,25 @@ public class Prey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
+        if (prey != null)
         {
-            prey.transform.LookAt(position);
-            prey.transform.position = position;
+            if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
+            {
+                prey.transform.LookAt(position);
+                prey.transform.position = position;
+            }
+            //prey cant have field of view because it wont run when predator is directly behind it
+            if (Vector3.Distance(position, predator.transform.position) < 5)
+            {
+                avoidPredator();
+            }
+            if (Vector3.Distance(position, predator.transform.position) < 0.1)
+            {
+                Debug.Log("Prey destroyed");
+                Destroy(prey);
+            }
         }
-        else
-        {
-            //changeDirection();
-        }
-        avoidPredator();
+        
     }
 
     void changeDirection()

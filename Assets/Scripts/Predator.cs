@@ -44,66 +44,69 @@ public class Predator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //need to worry about when random position takes it far out of bounds
-        //right now, it just waits to move until its position is back in bounds
-        if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
+        //Debug.Log("Angle: " +Vector3.Angle(predator.transform.forward, (prey.transform.position - position).normalized));
+        if (prey != null)
         {
-            predator.transform.LookAt(position);
-            predator.transform.position = position;
-        }
-        else
-        {
-            //position = new Vector3(0, 0, 0);
-            //predator.transform.position = new Vector3(0, 0, 0);
-        }
-
-        
-        if (Vector3.Distance(position, prey.transform.position) < 15 && Vector3.Angle(predator.transform.position, prey.transform.position) < 60)
-        {
-            chasing = true;
-            Debug.Log("chasing");
-            Debug.Log("Angle between predator and prey is: " + Vector3.Angle(predator.transform.position, prey.transform.position));
-        }
-        else
-        {
-            chasing = false;
-        }
-
-        if (chasing)
-        {
-            chasePrey();
-        }
-        else
-        {
-            timePassed += Time.deltaTime;
-            
-            if (timePassed < timeInterval)
+            //need to worry about when random position takes it far out of bounds
+            //right now, it just waits to move until its position is back in bounds
+            if (position.x < 10 && position.x > -10 && position.z < 10 && position.z > -10)
             {
-                if(direction == up && position.z > 9.8)
-                {
-                    direction = down;
-                }
-                else if (direction == down && position.z < -9.8)
-                {
-                    direction = up;
-                }
-                else if (direction == right && position.x > 9.8)
-                {
-                    direction = left;
-                }
-                else if (direction == left && position.x < -9.8)
-                {
-                    direction = right;
-                }
-                position += direction;
+                predator.transform.LookAt(position);
+                predator.transform.position = position;
             }
             else
             {
-                direction = moveRandomly();
-                timePassed = 0;
+                //position = new Vector3(0, 0, 0);
+                //predator.transform.position = new Vector3(0, 0, 0);
+            }
+
+
+            if (Vector3.Distance(position, prey.transform.position) < 20 && Vector3.Angle(predator.transform.forward, (prey.transform.position - position).normalized) < 60)
+            {
+                chasing = true;
+                Debug.Log("chasing");
+                //Debug.Log("Angle between predator and prey is: " + Vector3.Angle(predator.transform.position, prey.transform.position));
+            }
+            else
+            {
+                chasing = false;
+            }
+
+            if (chasing)
+            {
+                chasePrey();
+            }
+            else
+            {
+                timePassed += Time.deltaTime;
+
+                if (timePassed < timeInterval)
+                {
+                    if (direction == up && position.z > 9.8)
+                    {
+                        direction = down;
+                    }
+                    else if (direction == down && position.z < -9.8)
+                    {
+                        direction = up;
+                    }
+                    else if (direction == right && position.x > 9.8)
+                    {
+                        direction = left;
+                    }
+                    else if (direction == left && position.x < -9.8)
+                    {
+                        direction = right;
+                    }
+                    position += direction;
+                }
+                else
+                {
+                    direction = moveRandomly();
+                    timePassed = 0;
+                }
             }
         }
-
     }
 
     Vector3 moveRandomly()
