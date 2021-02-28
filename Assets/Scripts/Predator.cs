@@ -58,10 +58,11 @@ public class Predator : MonoBehaviour
         }
 
         
-        if (Vector3.Distance(position, prey.transform.position) < 10)
+        if (Vector3.Distance(position, prey.transform.position) < 15 && Vector3.Angle(predator.transform.position, prey.transform.position) < 60)
         {
             chasing = true;
             Debug.Log("chasing");
+            Debug.Log("Angle between predator and prey is: " + Vector3.Angle(predator.transform.position, prey.transform.position));
         }
         else
         {
@@ -86,13 +87,13 @@ public class Predator : MonoBehaviour
                 {
                     direction = up;
                 }
-                else if (direction == left && position.x > 9.8)
-                {
-                    direction = right;
-                }
-                else if (direction == right && position.x < -9.8)
+                else if (direction == right && position.x > 9.8)
                 {
                     direction = left;
+                }
+                else if (direction == left && position.x < -9.8)
+                {
+                    direction = right;
                 }
                 position += direction;
             }

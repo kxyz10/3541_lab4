@@ -21,7 +21,7 @@ public class Prey : MonoBehaviour
     void Start()
     {  
         createMesh(prey);
-        prey.transform.position = new Vector3(1, 1, 7);
+        prey.transform.position = new Vector3(1, 1, -3);
         position = prey.transform.position;
         prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
