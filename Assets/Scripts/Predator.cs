@@ -30,6 +30,8 @@ public class Predator : MonoBehaviour
         predator.transform.position = new Vector3(1, 1, 1);
         position = predator.transform.position;
         predator.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+        predator.GetComponent<FieldOfView>().viewDist = 9.8f;
+        predator.GetComponent<FieldOfView>().viewAngle = 200f;
         chasing = false;
         prey = GameObject.Find("prey");
         if (prey == null)
@@ -282,5 +284,6 @@ public class Predator : MonoBehaviour
         //create mesh renderer and material
         MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
         Material material = renderer.material;
+        FieldOfView fov = obj.AddComponent<FieldOfView>();
     }
 }

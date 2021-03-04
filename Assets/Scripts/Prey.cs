@@ -7,6 +7,7 @@ public class Prey : MonoBehaviour
     public Vector3 position;
     public GameObject predator;
     public GameObject prey;
+    public FieldOfView[] fov;
     Vector3 up = new Vector3(0, 0, 0.2f);
     Vector3 down = new Vector3(0, 0, -0.2f);
     Vector3 left = new Vector3(-0.2f, 0, 0);
@@ -25,6 +26,8 @@ public class Prey : MonoBehaviour
         position = prey.transform.position;
         prey.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         prey.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
+        prey.GetComponent<FieldOfView>().viewDist = 9.5f;
+        prey.GetComponent<FieldOfView>().viewAngle = 300f;
         predator = GameObject.Find("predator");
     }
 
@@ -49,7 +52,6 @@ public class Prey : MonoBehaviour
                 Destroy(prey);
             }
         }
-        
     }
 
     void changeDirection()
@@ -223,8 +225,9 @@ public class Prey : MonoBehaviour
         mesh.RecalculateNormals();
         mesh.Optimize();
 
-        //create mesh renderer and material
+        //create mesh renderer, material, and Field of view
         MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
         Material material = renderer.material;
+        FieldOfView fov = obj.AddComponent<FieldOfView>();
     }
 }
